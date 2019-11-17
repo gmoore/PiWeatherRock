@@ -51,12 +51,17 @@ import requests
 
 # local imports
 import config
+from pprint import pprint
 
 # globals
-MODE = 'd'  # Default to weather mode.
+MODE = 'h'  # Default to weather mode.
 MOUSE_X, MOUSE_Y = 0, 0
 UNICODE_DEGREE = u'\xb0'
 
+FONT_FACE="sfcompactdisplaythinotf"
+BACKGROUND_COLOR=(46,52,64)
+FONT_COLOR=(216,222,233)
+LINE_COLOR=(46,52,64)
 
 def deg_to_compass(degrees):
     val = int((degrees/22.5)+.5)
@@ -128,6 +133,9 @@ class my_display:
             pygame.display.init()
             driver = pygame.display.get_driver()
             print('Using the {0} driver.'.format(driver))
+
+            # print("Fonts:", len(pygame.font.get_fonts()))
+            # pprint(sorted(pygame.font.get_fonts()))
         else:
             "Ininitializes a new pygame screen using the framebuffer"
             # Based on "Python GUI in Linux frame buffer"
@@ -163,7 +171,7 @@ class my_display:
         syslog.syslog("Framebuffer Size: %d x %d" % (size[0], size[1]))
         self.screen = pygame.display.set_mode(size, pygame.FULLSCREEN)
         # Clear the screen to start
-        self.screen.fill((0, 0, 0))
+        self.screen.fill(BACKGROUND_COLOR)
         # Initialise font support
         pygame.font.init()
         # Render the screen
@@ -176,14 +184,14 @@ class my_display:
         if config.FULLSCREEN:
             self.xmax = pygame.display.Info().current_w - 35
             self.ymax = pygame.display.Info().current_h - 5
-            self.icon_size = '256'
+            self.icon_size = '64'
         else:
             self.xmax = 480 - 35
             self.ymax = 320 - 5
             self.icon_size = '64'
         self.subwindow_text_height = 0.055
-        self.time_date_text_height = 0.115
-        self.time_date_small_text_height = 0.075
+        self.time_date_text_height = 0.055
+        self.time_date_small_text_height = 0.055
         self.time_date_y_position = 8
         self.time_date_small_y_position = 18
 
@@ -257,8 +265,8 @@ class my_display:
         degree_symbol_y_offset = 0.001
         x_start_position = 0.52
         second_column_x_start_position = 0.69
-        text_color = (255, 255, 255)
-        font_name = "freesans"
+        text_color = FONT_COLOR
+        font_name = FONT_FACE
 
         if multiplier is None:
             y_start = y_start_position
@@ -266,7 +274,7 @@ class my_display:
             y_start = (y_start_position + line_spacing_gap * multiplier)
 
         conditions_font = pygame.font.SysFont(
-            font_name, int(self.ymax * conditions_text_height), bold=1)
+            font_name, int(self.ymax * conditions_text_height), bold=0)
 
         txt = conditions_font.render(str(label), True, text_color)
 
@@ -280,12 +288,12 @@ class my_display:
         if is_temp:
             txt_x = txt.get_size()[0]
             # Show degree F symbol using magic unicode char.
-            degree_font = pygame.font.SysFont(
-                font_name, int(self.ymax * degree_symbol_height), bold=1)
-            degree_txt = degree_font.render(UNICODE_DEGREE, True, text_color)
-            self.screen.blit(degree_txt, (
-                self.xmax * second_column_x_start_position + txt_x * 1.01,
-                self.ymax * (y_start + degree_symbol_y_offset)))
+            # degree_font = pygame.font.SysFont(
+            #     font_name, int(self.ymax * degree_symbol_height), bold=0)
+            # degree_txt = degree_font.render(UNICODE_DEGREE, True, text_color)
+            # self.screen.blit(degree_txt, (
+            #     self.xmax * second_column_x_start_position + txt_x * 1.01,
+            #     self.ymax * (y_start + degree_symbol_y_offset)))
 
     def display_subwindow(self, data, day, c_times):
         subwindow_centers = 0.125
@@ -293,13 +301,13 @@ class my_display:
         line_spacing_gap = 0.065
         rain_percent_line_offset = 5.95
         rain_present_text_height = 0.060
-        text_color = (255, 255, 255)
-        font_name = "freesans"
+        text_color = FONT_COLOR
+        font_name = FONT_FACE
 
         forecast_font = pygame.font.SysFont(
-            font_name, int(self.ymax * self.subwindow_text_height), bold=1)
+            font_name, int(self.ymax * self.subwindow_text_height), bold=0)
         rpfont = pygame.font.SysFont(
-            font_name, int(self.ymax * rain_present_text_height), bold=1)
+            font_name, int(self.ymax * rain_present_text_height), bold=0)
 
         txt = forecast_font.render(day, True, text_color)
         (txt_x, txt_y) = txt.get_size()
@@ -352,25 +360,25 @@ class my_display:
     def disp_summary(self):
         y_start_position = 0.444
         conditions_text_height = 0.04
-        text_color = (255, 255, 255)
-        font_name = "freesans"
+        text_color = FONT_COLOR
+        font_name = "arialnarrowttf"
 
         conditions_font = pygame.font.SysFont(
-            font_name, int(self.ymax * conditions_text_height), bold=1)
+            font_name, int(self.ymax * conditions_text_height), bold=0)
         txt = conditions_font.render(self.weather.summary, True, text_color)
         txt_x = txt.get_size()[0]
         x = self.xmax * 0.27 - (txt_x * 1.02) / 2
-        self.screen.blit(txt, (x, self.ymax * y_start_position))
+        self.screen.blit(txt, (x, (self.ymax * y_start_position) - 50))
 
     def disp_umbrella_info(self, umbrella_txt):
         x_start_position = 0.52
         y_start_position = 0.444
         conditions_text_height = 0.04
-        text_color = (255, 255, 255)
-        font_name = "freesans"
+        text_color = FONT_COLOR
+        font_name = "arialnarrowttf"
 
         conditions_font = pygame.font.SysFont(
-            font_name, int(self.ymax * conditions_text_height), bold=1)
+            font_name, int(self.ymax * conditions_text_height), bold=0)
         txt = conditions_font.render(umbrella_txt, True, text_color)
         self.screen.blit(txt, (
             self.xmax * x_start_position,
@@ -378,12 +386,12 @@ class my_display:
 
     def disp_weather(self):
         # Fill the screen with black
-        self.screen.fill((0, 0, 0))
+        self.screen.fill(BACKGROUND_COLOR)
         xmin = 10
         lines = 5
-        line_color = (255, 255, 255)
-        text_color = (255, 255, 255)
-        font_name = "freesans"
+        line_color = BACKGROUND_COLOR
+        text_color = FONT_COLOR
+        font_name = "arialnarrowttf"
 
         self.draw_screen_border(line_color, xmin, lines)
         self.disp_time_date(font_name, text_color)
@@ -434,12 +442,12 @@ class my_display:
 
     def disp_hourly(self):
         # Fill the screen with black
-        self.screen.fill((0, 0, 0))
+        self.screen.fill(BACKGROUND_COLOR)
         xmin = 10
         lines = 5
-        line_color = (255, 255, 255)
-        text_color = (255, 255, 255)
-        font_name = "freesans"
+        line_color = BACKGROUND_COLOR
+        text_color = FONT_COLOR
+        font_name = "arialnarrowttf"
 
         self.draw_screen_border(line_color, xmin, lines)
         self.disp_time_date(font_name, text_color)
@@ -476,9 +484,9 @@ class my_display:
         this_hour_24_int = int(datetime.datetime.fromtimestamp(
             this_hour.time).strftime("%H"))
         if this_hour_24_int <= 11:
-            ampm = 'a.m.'
+            ampm = 'am'
         else:
-            ampm = 'p.m.'
+            ampm = 'pm'
         this_hour_12_int = int(datetime.datetime.fromtimestamp(
             this_hour.time).strftime("%I"))
         this_hour_string = "{} {}".format(str(this_hour_12_int), ampm)
@@ -486,14 +494,14 @@ class my_display:
         self.display_subwindow(this_hour, this_hour_string, multiplier)
 
         # counts from 0 to 2
-        for future_hour in range(3):
+        for future_hour in range(3,12,3):
             this_hour = self.weather.hourly[future_hour + 1]
             this_hour_24_int = int(datetime.datetime.fromtimestamp(
                 this_hour.time).strftime("%H"))
             if this_hour_24_int <= 11:
-                ampm = 'a.m.'
+                ampm = 'am'
             else:
-                ampm = 'p.m.'
+                ampm = 'pm'
             this_hour_12_int = int(datetime.datetime.fromtimestamp(
                 this_hour.time).strftime("%I"))
             this_hour_string = "{} {}".format(str(this_hour_12_int), ampm)
@@ -506,30 +514,30 @@ class my_display:
     def disp_current_temp(self, font_name, text_color):
         # Outside Temp
         outside_temp_font = pygame.font.SysFont(
-            font_name, int(self.ymax * (0.5 - 0.15) * 0.6), bold=1)
+            font_name, int(self.ymax * (0.5 - 0.15) * 0.6), bold=0)
         txt = outside_temp_font.render(
             str(int(round(self.weather.temperature))), True, text_color)
         (txt_x, txt_y) = txt.get_size()
         # Show degree F symbol using magic unicode char in a smaller font size.
         degree_font = pygame.font.SysFont(
-            font_name, int(self.ymax * (0.5 - 0.15) * 0.3), bold=1)
+            font_name, int(self.ymax * (0.5 - 0.15) * 0.3), bold=0)
         degree_txt = degree_font.render(UNICODE_DEGREE, True, text_color)
         (rendered_am_pm_x, rendered_am_pm_y) = degree_txt.get_size()
         x = self.xmax * 0.27 - (txt_x * 1.02 + rendered_am_pm_x) / 2
-        self.screen.blit(txt, (x, self.ymax * 0.20))
-        x = x + (txt_x * 1.02)
-        self.screen.blit(degree_txt, (x, self.ymax * 0.2))
+        self.screen.blit(txt, (x, (self.ymax * 0.20) - 50))
+        # x = x + (txt_x * 1.02)
+        # self.screen.blit(degree_txt, (x, self.ymax * 0.2))
 
     def disp_time_date(self, font_name, text_color):
         # Time & Date
         time_date_font = pygame.font.SysFont(
-            font_name, int(self.ymax * self.time_date_text_height), bold=1)
+            font_name, int(self.ymax * self.time_date_text_height), bold=0)
         # Small Font for Seconds
         small_font = pygame.font.SysFont(
             font_name,
-            int(self.ymax * self.time_date_small_text_height), bold=1)
+            int(self.ymax * self.time_date_small_text_height), bold=0)
 
-        time_string = time.strftime("%a, %b %d   %I:%M", time.localtime())
+        time_string = time.strftime("%a, %b %d   %-I:%M", time.localtime())
         am_pm_string = time.strftime(" %p", time.localtime())
 
         rendered_time_string = time_date_font.render(time_string, True,
@@ -543,9 +551,9 @@ class my_display:
                                                        rendered_am_pm_x) / 2
         self.screen.blit(rendered_time_string, (full_time_string_x_position,
                                                 self.time_date_y_position))
-        self.screen.blit(rendered_am_pm_string,
-                         (full_time_string_x_position + rendered_time_x + 3,
-                          self.time_date_small_y_position))
+        # self.screen.blit(rendered_am_pm_string,
+        #                  (full_time_string_x_position + rendered_time_x + 3,
+        #                   self.time_date_small_y_position))
 
     def draw_screen_border(self, line_color, xmin, lines):
         # Draw Screen Border
@@ -589,12 +597,12 @@ class my_display:
     def disp_info(self, in_daylight, day_hrs, day_mins, seconds_til_daylight,
                   delta_seconds_til_dark):
         # Fill the screen with black
-        self.screen.fill((0, 0, 0))
+        self.screen.fill(BACKGROUND_COLOR)
         xmin = 10
         lines = 5
-        line_color = (0, 0, 0)
-        text_color = (255, 255, 255)
-        font_name = "freesans"
+        line_color = BACKGROUND_COLOR
+        text_color = FONT_COLOR
+        font_name = "arialnarrowttf"
 
         # Draw Screen Border
         pygame.draw.line(self.screen, line_color,
@@ -614,9 +622,9 @@ class my_display:
 
         # Time & Date
         regular_font = pygame.font.SysFont(
-            font_name, int(self.ymax * time_height_large), bold=1)
+            font_name, int(self.ymax * time_height_large), bold=0)
         small_font = pygame.font.SysFont(
-            font_name, int(self.ymax * time_height_small), bold=1)
+            font_name, int(self.ymax * time_height_small), bold=0)
 
         hours_and_minites = time.strftime("%I:%M", time.localtime())
         am_pm = time.strftime(" %p", time.localtime())
@@ -770,25 +778,25 @@ while running:
                 periodic_info_activation = 0
 
     # Automatically switch back to weather display after a couple minutes.
-    if MODE != 'd' and MODE != 'h':
-        periodic_info_activation = 0
-        non_weather_timeout += 1
-        # Five minute timeout at 100ms loop rate.
-        if non_weather_timeout > 3000:
-            MODE = 'd'
-            syslog.syslog("Switched to weather mode")
-    else:
-        non_weather_timeout = 0
-        periodic_info_activation += 1
-        curr_min_int = int(datetime.datetime.now().strftime("%M"))
-        # 15 minute timeout at 100ms loop rate
-        if periodic_info_activation > 9000:
-            MODE = 'i'
-            syslog.syslog("Switched to info mode")
-        elif periodic_info_activation > 600 and curr_min_int % 2 == 0:
-            MODE = 'h'
-        elif periodic_info_activation > 600:
-            MODE = 'd'
+    # if MODE != 'd' and MODE != 'h':
+    #     periodic_info_activation = 0
+    #     non_weather_timeout += 1
+    #     # Five minute timeout at 100ms loop rate.
+    #     if non_weather_timeout > 3000:
+    #         MODE = 'd'
+    #         syslog.syslog("Switched to weather mode")
+    # else:
+    #     non_weather_timeout = 0
+    #     periodic_info_activation += 1
+    #     curr_min_int = int(datetime.datetime.now().strftime("%M"))
+    #     # 15 minute timeout at 100ms loop rate
+    #     if periodic_info_activation > 9000:
+    #         MODE = 'i'
+    #         syslog.syslog("Switched to info mode")
+    #     elif periodic_info_activation > 600 and curr_min_int % 2 == 0:
+    #         MODE = 'h'
+    #     elif periodic_info_activation > 600:
+    #         MODE = 'd'
 
     # Daily Weather Display Mode
     if MODE == 'd':
