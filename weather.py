@@ -53,7 +53,7 @@ import requests
 import config
 
 # globals
-MODE = 'd'  # Default to weather mode.
+MODE = 'h'  # Default to hourly
 MOUSE_X, MOUSE_Y = 0, 0
 UNICODE_DEGREE = u'\xb0'
 
@@ -779,7 +779,7 @@ while running:
         non_weather_timeout += 1
         # Five minute timeout at 100ms loop rate.
         if non_weather_timeout > 3000:
-            MODE = 'd'
+            # MODE = 'd'
             syslog.syslog("Switched to weather mode")
     else:
         non_weather_timeout = 0
@@ -787,12 +787,12 @@ while running:
         curr_min_int = int(datetime.datetime.now().strftime("%M"))
         # 15 minute timeout at 100ms loop rate
         if periodic_info_activation > 9000:
-            MODE = 'i'
+            # MODE = 'i'
             syslog.syslog("Switched to info mode")
         elif periodic_info_activation > 600 and curr_min_int % 2 == 0:
-            MODE = 'h'
+            # MODE = 'h'
         elif periodic_info_activation > 600:
-            MODE = 'd'
+            # MODE = 'd'
 
     # Daily Weather Display Mode
     if MODE == 'd':
