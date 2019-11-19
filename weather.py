@@ -57,6 +57,8 @@ MODE = 'h'  # Default to hourly
 MOUSE_X, MOUSE_Y = 0, 0
 UNICODE_DEGREE = u'\xb0'
 
+FONT_FACE='lato'
+
 # Colors
 BACKGROUND_COLOR=(46,52,64)
 FONT_COLOR=(216,222,233)
@@ -263,7 +265,7 @@ class my_display:
         x_start_position = 0.52
         second_column_x_start_position = 0.69
         text_color = FONT_COLOR
-        font_name = "freesans"
+        font_name = FONT_FACE
 
         if multiplier is None:
             y_start = y_start_position
