@@ -218,10 +218,10 @@ class my_display:
 
                 self.sunrise = self.weather.daily[index].sunriseTime
                 self.sunrise_string = datetime.datetime.fromtimestamp(
-                    self.sunrise).strftime("%I:%M %p {}").format(sr_suffix)
+                    self.sunrise).strftime("%-I:%M %p {}").format(sr_suffix)
                 self.sunset = self.weather.daily[index].sunsetTime
                 self.sunset_string = datetime.datetime.fromtimestamp(
-                    self.sunset).strftime("%I:%M %p {}").format(ss_suffix)
+                    self.sunset).strftime("%-I:%M %p {}").format(ss_suffix)
 
                 # start with saying we don't need an umbrella
                 self.take_umbrella = False
@@ -287,9 +287,9 @@ class my_display:
             degree_font = pygame.font.SysFont(
                 font_name, int(self.ymax * degree_symbol_height), bold=1)
             degree_txt = degree_font.render(UNICODE_DEGREE, True, text_color)
-            self.screen.blit(degree_txt, (
-                self.xmax * second_column_x_start_position + txt_x * 1.01,
-                self.ymax * (y_start + degree_symbol_y_offset)))
+            # self.screen.blit(degree_txt, (
+            #     self.xmax * second_column_x_start_position + txt_x * 1.01,
+            #     self.ymax * (y_start + degree_symbol_y_offset)))
 
     def display_subwindow(self, data, day, c_times):
         subwindow_centers = 0.125
@@ -484,7 +484,7 @@ class my_display:
         else:
             ampm = 'p.m.'
         this_hour_12_int = int(datetime.datetime.fromtimestamp(
-            this_hour.time).strftime("%I"))
+            this_hour.time).strftime("%-I"))
         this_hour_string = "{} {}".format(str(this_hour_12_int), ampm)
         multiplier = 1
         self.display_subwindow(this_hour, this_hour_string, multiplier)
@@ -499,7 +499,7 @@ class my_display:
             else:
                 ampm = 'p.m.'
             this_hour_12_int = int(datetime.datetime.fromtimestamp(
-                this_hour.time).strftime("%I"))
+                this_hour.time).strftime("%-I"))
             this_hour_string = "{} {}".format(str(this_hour_12_int), ampm)
             multiplier += 2
             self.display_subwindow(this_hour, this_hour_string, multiplier)
@@ -522,7 +522,7 @@ class my_display:
         x = self.xmax * 0.27 - (txt_x * 1.02 + rendered_am_pm_x) / 2
         self.screen.blit(txt, (x, self.ymax * 0.20))
         x = x + (txt_x * 1.02)
-        self.screen.blit(degree_txt, (x, self.ymax * 0.2))
+        # self.screen.blit(degree_txt, (x, self.ymax * 0.2))
 
     def disp_time_date(self, font_name, text_color):
         # Time & Date
@@ -533,7 +533,7 @@ class my_display:
             font_name,
             int(self.ymax * self.time_date_small_text_height), bold=1)
 
-        time_string = time.strftime("%a, %b %d   %I:%M", time.localtime())
+        time_string = time.strftime("%a, %b %d   %-I:%M", time.localtime())
         am_pm_string = time.strftime(" %p", time.localtime())
 
         rendered_time_string = time_date_font.render(time_string, True,
@@ -622,7 +622,7 @@ class my_display:
         small_font = pygame.font.SysFont(
             font_name, int(self.ymax * time_height_small), bold=1)
 
-        hours_and_minites = time.strftime("%I:%M", time.localtime())
+        hours_and_minites = time.strftime("%-I:%M", time.localtime())
         am_pm = time.strftime(" %p", time.localtime())
 
         rendered_hours_and_minutes = regular_font.render(
@@ -663,7 +663,7 @@ class my_display:
         self.sPrint(text, small_font, self.xmax * 0.05, 10, text_color)
 
         text = "    %s" % time.strftime(
-            "%I:%M:%S %p %Z on %a. %d %b %Y ",
+            "%-I:%M:%S %p %Z on %a. %d %b %Y ",
             time.localtime(self.last_update_check))
         self.sPrint(text, small_font, self.xmax * 0.05, 11, text_color)
 
