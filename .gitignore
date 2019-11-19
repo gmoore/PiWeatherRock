@@ -2,3 +2,5 @@
 config.py
 *.pyc
 *.swp
+.DS_Store
+.jpeg
