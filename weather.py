@@ -57,6 +57,10 @@ MODE = 'd'  # Default to weather mode.
 MOUSE_X, MOUSE_Y = 0, 0
 UNICODE_DEGREE = u'\xb0'
 
+# Colors
+BACKGROUND_COLOR=(46,52,64)
+FONT_COLOR=(216,222,233)
+LINE_COLOR=(46,52,64)
 
 def deg_to_compass(degrees):
     val = int((degrees/22.5)+.5)
@@ -163,7 +167,7 @@ class my_display:
         syslog.syslog("Framebuffer Size: %d x %d" % (size[0], size[1]))
         self.screen = pygame.display.set_mode(size, pygame.FULLSCREEN)
         # Clear the screen to start
-        self.screen.fill((0, 0, 0))
+        self.screen.fill(BACKGROUND_COLOR)
         # Initialise font support
         pygame.font.init()
         # Render the screen
@@ -257,7 +261,7 @@ class my_display:
         degree_symbol_y_offset = 0.001
         x_start_position = 0.52
         second_column_x_start_position = 0.69
-        text_color = (255, 255, 255)
+        text_color = FONT_COLOR
         font_name = "freesans"
 
         if multiplier is None:
@@ -293,7 +297,7 @@ class my_display:
         line_spacing_gap = 0.065
         rain_percent_line_offset = 5.95
         rain_present_text_height = 0.060
-        text_color = (255, 255, 255)
+        text_color = FONT_COLOR
         font_name = "freesans"
 
         forecast_font = pygame.font.SysFont(
@@ -352,7 +356,7 @@ class my_display:
     def disp_summary(self):
         y_start_position = 0.444
         conditions_text_height = 0.04
-        text_color = (255, 255, 255)
+        text_color = FONT_COLOR
         font_name = "freesans"
 
         conditions_font = pygame.font.SysFont(
@@ -366,7 +370,7 @@ class my_display:
         x_start_position = 0.52
         y_start_position = 0.444
         conditions_text_height = 0.04
-        text_color = (255, 255, 255)
+        text_color = FONT_COLOR
         font_name = "freesans"
 
         conditions_font = pygame.font.SysFont(
@@ -378,11 +382,11 @@ class my_display:
 
     def disp_weather(self):
         # Fill the screen with black
-        self.screen.fill((0, 0, 0))
+        self.screen.fill(BACKGROUND_COLOR)
         xmin = 10
         lines = 5
-        line_color = (255, 255, 255)
-        text_color = (255, 255, 255)
+        line_color = BACKGROUND_COLOR
+        text_color = FONT_COLOR
         font_name = "freesans"
 
         self.draw_screen_border(line_color, xmin, lines)
@@ -434,11 +438,11 @@ class my_display:
 
     def disp_hourly(self):
         # Fill the screen with black
-        self.screen.fill((0, 0, 0))
+        self.screen.fill(BACKGROUND_COLOR)
         xmin = 10
         lines = 5
-        line_color = (255, 255, 255)
-        text_color = (255, 255, 255)
+        line_color = BACKGROUND_COLOR
+        text_color = FONT_COLOR
         font_name = "freesans"
 
         self.draw_screen_border(line_color, xmin, lines)
@@ -589,11 +593,11 @@ class my_display:
     def disp_info(self, in_daylight, day_hrs, day_mins, seconds_til_daylight,
                   delta_seconds_til_dark):
         # Fill the screen with black
-        self.screen.fill((0, 0, 0))
+        self.screen.fill(BACKGROUND_COLOR)
         xmin = 10
         lines = 5
-        line_color = (0, 0, 0)
-        text_color = (255, 255, 255)
+        line_color = BACKGROUND_COLOR
+        text_color = FONT_COLOR
         font_name = "freesans"
 
         # Draw Screen Border
