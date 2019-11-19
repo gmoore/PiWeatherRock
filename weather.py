@@ -133,6 +133,9 @@ class my_display:
             driver = pygame.display.get_driver()
             print('Using the {0} driver.'.format(driver))
         else:
+            print("Fonts:", len(pygame.font.get_fonts()))
+            pprint(sorted(pygame.font.get_fonts()))
+            
             "Ininitializes a new pygame screen using the framebuffer"
             # Based on "Python GUI in Linux frame buffer"
             # http://www.karoltomala.com/blog/?p=679
