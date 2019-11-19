@@ -490,7 +490,7 @@ class my_display:
         self.display_subwindow(this_hour, this_hour_string, multiplier)
 
         # counts from 0 to 2
-        for future_hour in range(3):
+        for future_hour in range(2,12,3):
             this_hour = self.weather.hourly[future_hour + 1]
             this_hour_24_int = int(datetime.datetime.fromtimestamp(
                 this_hour.time).strftime("%H"))
