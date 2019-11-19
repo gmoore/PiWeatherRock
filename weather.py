@@ -49,8 +49,6 @@ import pygame
 # from pygame.locals import *
 import requests
 
-from pprint import pprint
-
 # local imports
 import config
 
@@ -133,11 +131,8 @@ class my_display:
         if platform.system() == 'Darwin':
             pygame.display.init()
             driver = pygame.display.get_driver()
-            print('Using the {0} driver.'.format(driver))            
-            print("Fonts:", len(pygame.font.get_fonts()))
-            pprint(sorted(pygame.font.get_fonts()))
+            print('Using the {0} driver.'.format(driver))  
         else:
-
 
             "Ininitializes a new pygame screen using the framebuffer"
             # Based on "Python GUI in Linux frame buffer"
@@ -180,13 +175,13 @@ class my_display:
         pygame.mouse.set_visible(0)
         pygame.display.update()
         # Print out all available fonts
-        # for fontname in pygame.font.get_fonts():
-        #        print(fontname)
+        for fontname in pygame.font.get_fonts():
+               print(fontname)
 
         if config.FULLSCREEN:
             self.xmax = pygame.display.Info().current_w - 35
             self.ymax = pygame.display.Info().current_h - 5
-            self.icon_size = '256'
+            self.icon_size = '64'
         else:
             self.xmax = 480 - 35
             self.ymax = 320 - 5
