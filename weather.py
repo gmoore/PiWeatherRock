@@ -49,6 +49,8 @@ import pygame
 # from pygame.locals import *
 import requests
 
+from pprint import pprint
+
 # local imports
 import config
 
@@ -131,11 +133,12 @@ class my_display:
         if platform.system() == 'Darwin':
             pygame.display.init()
             driver = pygame.display.get_driver()
-            print('Using the {0} driver.'.format(driver))
-        else:
+            print('Using the {0} driver.'.format(driver))            
             print("Fonts:", len(pygame.font.get_fonts()))
             pprint(sorted(pygame.font.get_fonts()))
-            
+        else:
+
+
             "Ininitializes a new pygame screen using the framebuffer"
             # Based on "Python GUI in Linux frame buffer"
             # http://www.karoltomala.com/blog/?p=679
